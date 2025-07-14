@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-template="default">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume Builder</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+         :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-accent: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --secondary: #94a3b8;
+            --success: #34d399;
+            --danger: #f87171;
+            --warning: #fbbf24;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-accent: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #334155;
+            --border-hover: #475569;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-accent) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 280px 1fr 1fr;
+            gap: 24px;
+            padding: 24px;
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .panel {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-header {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .welcome-header {
+            background: var(--bg-accent);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+        
+        .welcome-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        
+        .welcome-email {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .panel-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .panel-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        
+        .sidebar {
+            max-height: calc(100vh - 48px);
+        }
+        
+        .section-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .section-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: transparent;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .section-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .section-btn i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .control-group {
+            margin-bottom: 24px;
+        }
+        
+        .control-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--bg-accent);
+            border: 2px dashed var(--border);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .file-input-label:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+        
+        .select-input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .select-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .action-btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .action-btn.primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .action-btn.secondary {
+            background: var(--bg-accent);
+            color: var(--text-secondary);
+            border: 2px solid var(--border);
+        }
+        
+        .action-btn.secondary:hover {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+        
+        .action-btn.success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .action-btn.success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .action-btn.warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .action-btn.warning:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .builder {
+            max-height: calc(100vh - 48px);
+        }
+        
+        .builder-content {
+            min-height: 200px;
+        }
+        
+        .section-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius);
+            margin-bottom: 16px;
+            overflow: hidden;
+            cursor: grab;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .section-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .section-card:active {
+            cursor: grabbing;
+        }
+        
+        .section-card.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--bg-accent) 0%, var(--bg-secondary) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .section-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+        
+        .section-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            resize: vertical;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .preview {
+            max-height: calc(100vh - 48px);
+        }
+        
+        .preview-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .profile-image {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .profile-image img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #000000;
+            /* Default border color */
+            box-shadow: var(--shadow-lg);
+            transition: border-color 0.2s ease;
+            /* Smooth transition for border color changes */
+        }
+        
+        .preview-section {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .preview-section:last-child {
+            border-bottom: none;
+        }
+        
+        .preview-section h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .preview-section h3 i {
+            color: inherit;
+            /* Ensure icons inherit the text color */
+            transition: color 0.2s ease;
+            /* Smooth transition for color changes */
+        }
+        
+        .preview-field {
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+        
+        .preview-field-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .preview-field-value {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .preview-field-value a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .preview-field-value a:hover {
+            text-decoration: underline;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+        /* Template Styles */
+        
+        [data-template="minimal"] .preview-section h3 {
+            border-bottom: 1px dashed var(--primary);
+            padding-bottom: 8px;
+            font-style: italic;
+        }
+        
+        [data-template="modern"] .preview-section h3 {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 20px;
+        }
+        
+        [data-template="modern"] .preview-section {
+            background: var(--bg-accent);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 260px 1fr;
+                grid-template-rows: auto 1fr;
+            }
+            .preview {
+                grid-column: 1 / -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 16px;
+                gap: 16px;
+            }
+            .panel-header {
+                padding: 16px 20px;
+            }
+            .panel-content {
+                padding: 20px;
+            }
+        }
+        /* Animations */
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-card {
+            animation: slideIn 0.3s ease-out;
+        }
+        /* Drag and Drop Styles */
+        
+        .builder.drag-over {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
+        }
+        
+        .drag-placeholder {
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+            margin: 8px 0;
+            opacity: 0.7;
+        }
+        
+        .error-message {
+            color: red;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+        }
+        
+        .color-picker {
+            width: 100%;
+            height: 40px;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .color-picker:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="panel sidebar">
+            <div class="panel-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-plus-circle"></i>
+                    <h2>Add Sections</h2>
+                </div>
+                <div class="user-info">
+                    <span id="userEmail"></span>
+                    <button class="logout-btn" onclick="logout()" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content">
+                <div class="welcome-header">
+                    <div class="welcome-text">Welcome back!</div>
+                    <div class="welcome-email" id="welcomeEmail"></div>
+                </div>
+                <div class="section-buttons">
+                    <button class="section-btn" data-section="contact">
+                        <i class="fas fa-user"></i>
+                        Contact Info
+                    </button>
+                    <button class="section-btn" data-section="summary">
+                        <i class="fas fa-file-alt"></i>
+                        Professional Summary
+                    </button>
+                    <button class="section-btn" data-section="experience">
+                        <i class="fas fa-briefcase"></i>
+                        Work Experience
+                    </button>
+                    <button class="section-btn" data-section="education">
+                        <i class="fas fa-graduation-cap"></i>
+                        Education
+                    </button>
+                    <button class="section-btn" data-section="skills">
+                        <i class="fas fa-cogs"></i>
+                        Skills
+                    </button>
+                    <button class="section-btn" data-section="projects">
+                        <i class="fas fa-project-diagram"></i>
+                        Projects
+                    </button>
+                    <button class="section-btn" data-section="certifications">
+                        <i class="fas fa-certificate"></i>
+                        Certifications
+                    </button>
+                    <button class="section-btn" data-section="languages">
+                        <i class="fas fa-language"></i>
+                        Languages
+                    </button>
+                    <button class="section-btn" data-section="achievements">
+                        <i class="fas fa-trophy"></i>
+                        Achievements
+                    </button>
+                    <button class="section-btn" data-section="interests">
+                        <i class="fas fa-heart"></i>
+                        Interests
+                    </button>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <i class="fas fa-image"></i> Profile Picture
+                    </label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="profilePic" class="file-input" accept="image/*">
+                        <label for="profilePic" class="file-input-label">
+                            <i class="fas fa-upload"></i>
+                            Choose Image
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <i class="fas fa-palette"></i> Resume Theme
+                    </label>
+                    <select id="themeSelect" class="select-input">
+                        <option value="default">Default</option>
+                        <option value="minimal">Minimal</option>
+                        <option value="modern">Modern</option>
+                    </select>
+                </div>
+
+                <!-- Add this to the sidebar panel-content -->
+                <div class="control-group">
+                    <label class="control-label">
+                        <i class="fas fa-palette"></i> Preview Background Color
+                    </label>
+                    <input type="color" id="previewBgColor" class="color-picker" value="#ffffff">
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <i class="fas fa-palette"></i> Preview Text Color
+                    </label>
+                    <input type="color" id="previewTextColor" class="color-picker" value="#000000">
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn success" onclick="saveToLocal()">
+                        <i class="fas fa-save"></i>
+                        Save Resume
+                    </button>
+                    <button class="action-btn warning" onclick="loadFromLocal()">
+                        <i class="fas fa-folder-open"></i>
+                        Load Resume
+                    </button>
+                    <button class="action-btn primary" onclick="downloadPDF()">
+                        <i class="fas fa-download"></i>
+                        Export PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Builder -->
+        <div class="panel builder">
+            <div class="panel-header">
+                <i class="fas fa-edit"></i>
+                <h2>Resume Builder</h2>
+            </div>
+            <div class="panel-content">
+                <div class="builder-content" id="builder">
+                    <div class="empty-state">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Start Building Your Resume</h3>
+                        <p>Click on any section from the sidebar to add it to your resume.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="panel preview">
+            <div class="panel-header">
+                <i class="fas fa-eye"></i>
+                <h2>Live Preview</h2>
+            </div>
+            <div class="panel-content">
+                <div class="preview-content" id="preview">
+                    <div id="profileImagePreview" class="profile-image"></div>
+                    <div class="empty-state">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Preview Your Resume</h3>
+                        <p>Your resume will appear here as you add sections.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        const builder = document.getElementById("builder");
+        const preview = document.getElementById("preview");
+        const addButtons = document.querySelectorAll(".section-btn[data-section]");
+        let sectionId = 0;
+        const sectionsData = [];
+
+        const sectionIcons = {
+            contact: 'fas fa-user',
+            summary: 'fas fa-file-alt',
+            education: 'fas fa-graduation-cap',
+            experience: 'fas fa-briefcase',
+            skills: 'fas fa-cogs',
+            projects: 'fas fa-project-diagram',
+            certifications: 'fas fa-certificate',
+            languages: 'fas fa-language',
+            achievements: 'fas fa-trophy',
+            interests: 'fas fa-heart'
+        };
+
+        const templates = {
+            contact: {
+                title: "Contact Information",
+                fields: [{
+                    label: "Full Name",
+                    type: "text",
+                    name: "fullName",
+                    placeholder: "Group Five"
+                }, {
+                    label: "Email",
+                    type: "email",
+                    name: "email",
+                    placeholder: "group.five@email.com"
+                }, {
+                    label: "Phone",
+                    type: "tel",
+                    name: "phone",
+                    placeholder: "(+233) 123-4567"
+                }, {
+                    label: "LinkedIn",
+                    type: "text",
+                    name: "linkedin",
+                    placeholder: "linkedin.com/in/groupfive"
+                }, {
+                    label: "Location",
+                    type: "text",
+                    name: "location",
+                    placeholder: "City, Region"
+                }, ],
+            },
+            summary: {
+                title: "Professional Summary",
+                fields: [{
+                    label: "Summary",
+                    type: "textarea",
+                    name: "summaryText",
+                    placeholder: "Write a compelling professional summary that highlights your key achievements and career goals..."
+                }],
+            },
+            education: {
+                title: "Education",
+                fields: [{
+                    label: "School Name",
+                    type: "text",
+                    name: "school",
+                    placeholder: "University of Example"
+                }, {
+                    label: "Degree",
+                    type: "text",
+                    name: "degree",
+                    placeholder: "Bachelor of Science in Computer Science"
+                }, {
+                    label: "Start Date",
+                    type: "text",
+                    name: "startDate",
+                    placeholder: "September 2018"
+                }, {
+                    label: "End Date",
+                    type: "text",
+                    name: "endDate",
+                    placeholder: "May 2022"
+                }, {
+                    label: "GPA (Optional)",
+                    type: "text",
+                    name: "gpa",
+                    placeholder: "3.8/4.0"
+                }, {
+                    label: "Description",
+                    type: "textarea",
+                    name: "description",
+                    placeholder: "Relevant coursework, achievements, honors..."
+                }, ],
+            },
+            experience: {
+                title: "Work Experience",
+                fields: [{
+                    label: "Company",
+                    type: "text",
+                    name: "company",
+                    placeholder: "Company Name Inc."
+                }, {
+                    label: "Position",
+                    type: "text",
+                    name: "position",
+                    placeholder: "Software Engineer"
+                }, {
+                    label: "Start Date",
+                    type: "text",
+                    name: "startDate",
+                    placeholder: "January 2022"
+                }, {
+                    label: "End Date",
+                    type: "text",
+                    name: "endDate",
+                    placeholder: "Present"
+                }, {
+                    label: "Location",
+                    type: "text",
+                    name: "location",
+                    placeholder: "City, Region"
+                }, {
+                    label: "Responsibilities",
+                    type: "textarea",
+                    name: "responsibilities",
+                    placeholder: "• Developed and maintained web applications\n• Collaborated with cross-functional teams\n• Improved system performance by 30%"
+                }, ],
+            },
+            skills: {
+                title: "Skills",
+                fields: [{
+                    label: "Skills (comma separated)",
+                    type: "textarea",
+                    name: "skillsList",
+                    placeholder: "JavaScript, Python, React, Node.js, SQL, Git, AWS, Docker"
+                }],
+            },
+            projects: {
+                title: "Projects",
+                fields: [{
+                    label: "Project Title",
+                    type: "text",
+                    name: "title",
+                    placeholder: "E-commerce Web Application"
+                }, {
+                    label: "Description",
+                    type: "textarea",
+                    name: "description",
+                    placeholder: "Built a full-stack e-commerce platform with user authentication, payment processing, and inventory management..."
+                }, {
+                    label: "Tools/Technologies",
+                    type: "text",
+                    name: "tools",
+                    placeholder: "React, Node.js, MongoDB, Stripe API"
+                }, {
+                    label: "Project URL (Optional)",
+                    type: "text",
+                    name: "url",
+                    placeholder: "https://github.com/username/project"
+                }, ],
+            },
+            certifications: {
+                title: "Certifications",
+                fields: [{
+                    label: "Certification Name",
+                    type: "text",
+                    name: "certName",
+                    placeholder: "AWS Certified Developer"
+                }, {
+                    label: "Issuing Organization",
+                    type: "text",
+                    name: "issuer",
+                    placeholder: "Amazon Web Services"
+                }, {
+                    label: "Date",
+                    type: "text",
+                    name: "date",
+                    placeholder: "March 2023"
+                }, {
+                    label: "Credential ID (Optional)",
+                    type: "text",
+                    name: "credentialId",
+                    placeholder: "ABC123XYZ"
+                }, ],
+            },
+            languages: {
+                title: "Languages",
+                fields: [{
+                    label: "Languages with proficiency levels",
+                    type: "textarea",
+                    name: "languageList",
+                    placeholder: "English (Native), Spanish (Fluent), French (Intermediate)"
+                }],
+            },
+            achievements: {
+                title: "Achievements",
+                fields: [{
+                    label: "Describe your achievements",
+                    type: "textarea",
+                    name: "achievementsText",
+                    placeholder: "• Winner of Company Innovation Award 2023\n• Published research paper in IEEE conference\n• Led team of 5 developers to deliver project 2 weeks ahead of schedule"
+                }],
+            },
+            interests: {
+                title: "Interests",
+                fields: [{
+                    label: "List your interests (comma seperated)",
+                    type: "textarea",
+                    name: "interestsList",
+                    placeholder: "Photography, Rock climbing, Open source contributions, Cooking, Travel"
+                }],
+            },
+        };
+
+        // Initialize event listeners
+        addButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const type = btn.dataset.section;
+                addSection(type);
+            });
+        });
+
+        // Profile picture handler
+        document.getElementById('profilePic').addEventListener('change', function(e) {
+            previewProfilePic(e.target);
+        });
+
+        // Theme select handler
+        document.getElementById('themeSelect').addEventListener('change', function(e) {
+            changeTemplate(e.target.value);
+        });
+
+        function addSection(type) {
+            sectionId++;
+            const instanceId = `${type}_${sectionId}`;
+            const section = {
+                id: sectionId,
+                type,
+                instanceId,
+                data: {}
+            };
+            sectionsData.push(section);
+            const template = templates[type];
+
+            const emptyState = builder.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            const card = document.createElement("div");
+            card.className = "section-card";
+            card.draggable = true;
+            card.dataset.id = sectionId;
+            card.dataset.instanceId = instanceId;
+
+            card.addEventListener("dragstart", dragStart);
+            card.addEventListener("dragend", dragEnd);
+
+            const header = document.createElement("div");
+            header.className = "section-header";
+
+            const titleDiv = document.createElement("div");
+            titleDiv.className = "section-title";
+            const instanceCount = document.querySelectorAll(`[data-type="${type}"]`).length + 1;
+            const titleText = instanceCount > 1 ? `${template.title} ${instanceCount}` : template.title;
+            titleDiv.innerHTML = `<i class="${sectionIcons[type]}"></i> ${titleText}`;
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "delete-btn";
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+            deleteBtn.onclick = () => {
+                card.remove();
+                const index = sectionsData.findIndex(s => s.instanceId === instanceId);
+                if (index > -1) sectionsData.splice(index, 1);
+                updatePreview();
+
+                if (sectionsData.length === 0) {
+                    showEmptyState();
+                }
+                renumberSections(type);
+            };
+
+            header.appendChild(titleDiv);
+            header.appendChild(deleteBtn);
+            card.appendChild(header);
+
+            const body = document.createElement("div");
+            body.className = "section-body";
+
+            template.fields.forEach((field) => {
+                const formGroup = document.createElement("div");
+                formGroup.className = "form-group";
+
+                const label = document.createElement("label");
+                label.className = "control-label";
+                label.textContent = field.label;
+
+                let input;
+                if (field.type === "textarea") {
+                    input = document.createElement("textarea");
+                    input.rows = 4;
+                } else {
+                    input = document.createElement("input");
+                    input.type = field.type;
+                }
+
+                input.id = `${instanceId}_${field.name}`;
+                input.className = "form-input";
+                input.name = field.name;
+                input.placeholder = field.placeholder || "";
+
+                const errorDiv = document.createElement("div");
+                errorDiv.className = "error-message";
+                errorDiv.style.color = "red";
+                errorDiv.style.fontSize = "0.8rem";
+                errorDiv.style.marginTop = "4px";
+                errorDiv.style.display = "none";
+
+                input.addEventListener("input", (e) => {
+                    const value = e.target.value.trim();
+                    const section = sectionsData.find(s => s.instanceId === instanceId);
+                    if (section) {
+                        if (!section.data) {
+                            section.data = {};
+                        }
+                        section.data[field.name] = value;
+                        updatePreview();
+                    }
+
+                    // Validate the input
+                    const errorMessage = validateField(field, value);
+                    if (errorMessage) {
+                        errorDiv.textContent = errorMessage;
+                        errorDiv.style.display = "block";
+                        input.style.borderColor = "red";
+                    } else {
+                        errorDiv.textContent = "";
+                        errorDiv.style.display = "none";
+                        input.style.borderColor = "";
+                    }
+                });
+
+                formGroup.appendChild(label);
+                formGroup.appendChild(input);
+                formGroup.appendChild(errorDiv);
+                body.appendChild(formGroup);
+            });
+
+            card.appendChild(body);
+            builder.appendChild(card);
+
+            card.style.animation = "slideIn 0.3s ease-out";
+
+            updatePreview();
+        }
+
+        // Add function to renumber sections of the same type
+        function renumberSections(type) {
+            const sections = document.querySelectorAll(`[data-type="${type}"]`);
+            sections.forEach((section, index) => {
+                        const titleDiv = section.querySelector('.section-title');
+                        const baseTitle = templates[type].title;
+                        titleDiv.innerHTML = `<i class="${sectionIcons[type]}"></i> ${index > 0 ? `${baseTitle} ${index + 1}` : baseTitle}`;
+            });
+        }
+
+        // Update the updatePreview function to handle multiple instances
+        function updatePreview() {
+            const profileImagePreview = document.getElementById('profileImagePreview');
+            const previewContent = document.getElementById('preview');
+            
+            previewContent.innerHTML = '';
+            previewContent.appendChild(profileImagePreview);
+            
+            // Apply saved colors to the preview container
+            const bgColor = window.savedPreviewBgColor || "#ffffff";
+            const textColor = window.savedPreviewTextColor || "#000000";
+            
+            preview.style.backgroundColor = bgColor;
+            preview.style.color = textColor;
+            
+            if (sectionsData.length === 0) {
+                const emptyState = document.createElement('div');
+                emptyState.className = 'empty-state';
+                emptyState.innerHTML = `
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Preview Your Resume</h3>
+                    <p>Your resume will appear here as you add sections.</p>
+                `;
+                previewContent.appendChild(emptyState);
+                return;
+            }
+
+            sectionsData.forEach((section) => {
+                const template = templates[section.type];
+                const sectionDiv = document.createElement("div");
+                sectionDiv.className = "preview-section";
+                sectionDiv.dataset.instanceId = section.instanceId;
+                
+                // Get instance number for title
+                const instanceCount = sectionsData.filter(s => 
+                    s.type === section.type && 
+                    s.id <= section.id
+                ).length;
+                
+                const title = document.createElement("h3");
+                const titleText = instanceCount > 1 ? `${template.title} ${instanceCount}` : template.title;
+                title.innerHTML = `<i class="${sectionIcons[section.type]}"></i> ${titleText}`;
+                
+                // Apply text color to title and icon
+                title.style.color = textColor;
+                const icon = title.querySelector("i");
+                if (icon) {
+                    icon.style.color = textColor;
+                }
+
+                sectionDiv.appendChild(title);
+
+                if (section.type === 'contact') {
+                    formatContactSection(sectionDiv, section, template);
+                } else if (section.type === 'skills' || section.type === 'languages' || section.type === 'interests') {
+                    formatListSection(sectionDiv, section, template);
+                } else if (section.type === 'summary' || section.type === 'achievements') {
+                    formatTextSection(sectionDiv, section, template);
+                } else {
+                    formatDefaultSection(sectionDiv, section, template);
+                }
+
+                previewContent.appendChild(sectionDiv);
+            });
+        }
+
+        function formatContactSection(sectionDiv, section, template) {
+            const contactInfo = document.createElement('div');
+            contactInfo.style.display = 'grid';
+            contactInfo.style.gridTemplateColumns = 'repeat(auto-fit, minmax(250px, 1fr))';
+            contactInfo.style.gap = '12px';
+
+            const textColor = window.savedPreviewTextColor || "#000000"; // Get the current text color
+
+            template.fields.forEach((field) => {
+                const value = section.data[field.name];
+                if (value && value.trim()) {
+                    const fieldDiv = document.createElement('div');
+                    fieldDiv.className = 'preview-field';
+                    
+                    let icon = '';
+                    switch (field.name) {
+                        case 'email': icon = 'fas fa-envelope'; break;
+                        case 'phone': icon = 'fas fa-phone'; break;
+                        case 'linkedin': icon = 'fab fa-linkedin'; break;
+                        case 'location': icon = 'fas fa-map-marker-alt'; break;
+                        default: icon = 'fas fa-user';
+                    }
+                    
+                    // Use dynamic text color instead of hardcoded var(--primary)
+                    fieldDiv.innerHTML = `
+                        <i class="${icon}" style="color: ${textColor}; margin-right: 8px;"></i>
+                        <span style="color: ${textColor};">${value}</span>
+                    `;
+                    contactInfo.appendChild(fieldDiv);
+                }
+            });
+            sectionDiv.appendChild(contactInfo);
+        }
+
+        function formatListSection(sectionDiv, section, template) {
+            const field = template.fields[0];
+            const value = section.data[field.name];
+            const textColor = window.savedPreviewTextColor || "#000000";
+    
+            if (value && value.trim()) {
+                const items = value.split(',').map(item => item.trim()).filter(item => item);
+                const listDiv = document.createElement('div');
+                listDiv.style.display = 'flex';
+                listDiv.style.flexWrap = 'wrap';
+                listDiv.style.gap = '8px';
+                
+                items.forEach(item => {
+                    const tag = document.createElement('span');
+                    tag.style.cssText = `
+                        background: ${textColor};
+                        color: white;
+                        padding: 6px 12px;
+                        border-radius: 20px;
+                        font-size: 0.85rem;
+                        font-weight: 500;
+                    `;
+                    tag.textContent = item;
+                    listDiv.appendChild(tag);
+                });
+                
+                sectionDiv.appendChild(listDiv);
+            }
+        }
+
+        function formatTextSection(sectionDiv, section, template) {
+            const field = template.fields[0];
+            const value = section.data[field.name];
+            const textColor = window.savedPreviewTextColor || "#000000";
+    
+            if (value && value.trim()) {
+                const textDiv = document.createElement('div');
+                textDiv.style.lineHeight = '1.6';
+                textDiv.style.color = textColor; // Use dynamic color
+                textDiv.innerHTML = value.replace(/\n/g, '<br>');
+                sectionDiv.appendChild(textDiv);
+            }
+        }
+
+        function updateSectionData(sectionId, fieldName, value) {
+            const section = sectionsData.find(s => s.id === sectionId);
+            if (section) {
+                if (!section.data) {
+                    section.data = {};
+                }
+                section.data[fieldName] = value;
+                updatePreview();
+            }
+        }
+
+        function formatDefaultSection(sectionDiv, section, template) {
+            const textColor = window.savedPreviewTextColor || "#000000";
+            
+            template.fields.forEach((field) => {
+                const value = section.data ? section.data[field.name] : '';
+                if (value && value.trim()) {
+                    const fieldDiv = document.createElement("div");
+                    fieldDiv.className = "preview-field";
+                    fieldDiv.dataset.instanceId = section.instanceId;
+                    
+                    const label = document.createElement("div");
+                    label.className = "preview-field-label";
+                    label.textContent = field.label;
+                    label.style.color = textColor; // Apply dynamic color
+                    
+                    const valueDiv = document.createElement("div");
+                    valueDiv.className = "preview-field-value";
+                    valueDiv.style.color = textColor; // Apply dynamic color
+                    
+                    // Handle different types of content
+                    if (field.type === 'textarea') {
+                        valueDiv.innerHTML = value.replace(/\n/g, '<br>');
+                    } else if (field.type === 'email') {
+                        valueDiv.innerHTML = `<a href="mailto:${value}" style="color: ${textColor};">${value}</a>`;
+                    } else if (field.type === 'tel') {
+                        valueDiv.innerHTML = `<a href="tel:${value}" style="color: ${textColor};">${value}</a>`;
+                    } else if (field.name === 'linkedin') {
+                        valueDiv.innerHTML = `<a href="${value}" target="_blank" style="color: ${textColor};">${value}</a>`;
+                    } else {
+                        valueDiv.textContent = value;
+                    }
+                    
+                    fieldDiv.appendChild(label);
+                    fieldDiv.appendChild(valueDiv);
+                    sectionDiv.appendChild(fieldDiv);
+                }
+            });
+        }
+
+        function showEmptyState() {
+            const emptyState = document.createElement('div');
+            emptyState.className = 'empty-state';
+            emptyState.innerHTML = `
+                <i class="fas fa-plus-circle"></i>
+                <h3>Start Building Your Resume</h3>
+                <p>Click on any section from the sidebar to add it to your resume.</p>
+            `;
+            builder.appendChild(emptyState);
+        }
+
+        // Drag and Drop functionality
+        let draggedElem = null;
+
+        function dragStart(e) {
+            draggedElem = e.target;
+            e.target.classList.add('dragging');
+            e.dataTransfer.setData("text/plain", draggedElem.dataset.id);
+            builder.classList.add('drag-over');
+        }
+
+        function dragEnd(e) {
+            e.target.classList.remove('dragging');
+            builder.classList.remove('drag-over');
+            draggedElem = null;
+        }
+
+        builder.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(builder, e.clientY);
+            if (afterElement == null) {
+                builder.appendChild(draggedElem);
+            } else {
+                builder.insertBefore(draggedElem, afterElement);
+            }
+        });
+
+        builder.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const newOrder = [];
+            builder.querySelectorAll(".section-card").forEach((card) => {
+                const id = parseInt(card.dataset.id);
+                const section = sectionsData.find((s) => s.id === id);
+                if (section) newOrder.push(section);
+            });
+            sectionsData.length = 0;
+            sectionsData.push(...newOrder);
+            updatePreview();
+        });
+
+        function getDragAfterElement(container, y) {
+            const elements = [...container.querySelectorAll(".section-card:not(.dragging)")];
+            return elements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                return offset < 0 && offset > closest.offset ? { offset, element: child } : closest;
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        // Save/Load functionality
+        function saveToLocal() {
+            try {
+                // Get profile image as base64
+                const profileImg = document.querySelector("#profileImagePreview img");
+                let profileImageData = null;
+                if (profileImg) {
+                    profileImageData = profileImg.src; // This will be base64 if uploaded
+                }
+
+                const resumeData = {
+                    sections: sectionsData,
+                    theme: document.documentElement.getAttribute("data-theme"),
+                    template: document.documentElement.getAttribute("data-template"),
+                    previewBgColor: window.savedPreviewBgColor || "#ffffff",
+                    previewTextColor: window.savedPreviewTextColor || "#000000",
+                    profileImage: profileImageData, // Save the base64 image data
+                };
+                localStorage.setItem("resumeData", JSON.stringify(resumeData));
+                showNotification("Resume saved successfully!", "success");
+            } catch (error) {
+                showNotification("Error saving resume. Please try again.", "error");
+                console.error("Save error:", error);
+            }
+        }
+        function updateProfileImageBorder() {
+            const profileImg = document.querySelector("#profileImagePreview img");
+            if (profileImg) {
+                const textColor = window.savedPreviewTextColor || "#000000";
+                profileImg.style.borderColor = textColor;
+            }
+        }
+        function loadFromLocal() {
+            try {
+                const saved = localStorage.getItem("resumeData");
+                if (saved) {
+                    const resumeData = JSON.parse(saved);
+
+                    // Clear existing content
+                    builder.innerHTML = '';
+                    sectionsData.length = 0;
+                    sectionId = 0;
+
+                    // Load sections
+                    if (resumeData.sections) {
+                        resumeData.sections.forEach((section) => {
+                            sectionId = Math.max(sectionId, section.id);
+                            sectionsData.push(section);
+                            recreateSection(section);
+                        });
+                    }
+
+                    // Restore theme and template
+                    if (resumeData.theme) {
+                        document.documentElement.setAttribute("data-theme", resumeData.theme);
+                    }
+                    if (resumeData.template) {
+                        document.documentElement.setAttribute("data-template", resumeData.template);
+                        document.getElementById("themeSelect").value = resumeData.template;
+                    }
+
+                    // Restore preview colors
+                    if (resumeData.previewBgColor) {
+                        document.getElementById("previewBgColor").value = resumeData.previewBgColor;
+                        preview.style.backgroundColor = resumeData.previewBgColor;
+                        window.savedPreviewBgColor = resumeData.previewBgColor;
+                    }
+                    if (resumeData.previewTextColor) {
+                        document.getElementById("previewTextColor").value = resumeData.previewTextColor;
+                        preview.style.color = resumeData.previewTextColor;
+                        window.savedPreviewTextColor = resumeData.previewTextColor;
+                    }
+
+                    // Restore profile image
+                    if (resumeData.profileImage) {
+                        const profileImagePreview = document.getElementById("profileImagePreview");
+                        profileImagePreview.innerHTML = `<img src="${resumeData.profileImage}" alt="Profile Picture" />`;
+                        updateProfileImageBorder(); // Apply current text color to border
+                    }
+
+                    updatePreview();
+                    showNotification("Resume loaded successfully!", "success");
+                } else {
+                    showNotification("No saved resume found.", "warning");
+                }
+            } catch (error) {
+                showNotification("Error loading resume. Data may be corrupted.", "error");
+                console.error("Load error:", error);
+            }
+        }
+
+        function recreateSection(section) {
+            const template = templates[section.type];
+            const card = document.createElement("div");
+            card.className = "section-card";
+            card.draggable = true;
+            card.dataset.id = section.id;
+            card.dataset.instanceId = section.instanceId;
+
+            card.addEventListener("dragstart", dragStart);
+            card.addEventListener("dragend", dragEnd);
+
+            const header = document.createElement("div");
+            header.className = "section-header";
+
+            const titleDiv = document.createElement("div");
+            titleDiv.className = "section-title";
+            titleDiv.innerHTML = `<i class="${sectionIcons[section.type]}"></i> ${template.title}`;
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "delete-btn";
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+            deleteBtn.onclick = () => {
+                card.remove();
+                const index = sectionsData.findIndex((s) => s.id === section.id);
+                if (index > -1) sectionsData.splice(index, 1);
+                updatePreview();
+
+                if (sectionsData.length === 0) {
+                    showEmptyState();
+                }
+            };
+
+            header.appendChild(titleDiv);
+            header.appendChild(deleteBtn);
+            card.appendChild(header);
+
+            const body = document.createElement("div");
+            body.className = "section-body";
+
+            template.fields.forEach((field) => {
+                const formGroup = document.createElement("div");
+                formGroup.className = "form-group";
+
+                const label = document.createElement("label");
+                label.className = "form-label";
+                label.textContent = field.label;
+
+                let input;
+                if (field.type === "textarea") {
+                    input = document.createElement("textarea");
+                    input.rows = 4;
+                } else {
+                    input = document.createElement("input");
+                    input.type = field.type;
+                }
+
+                input.className = "form-input";
+                input.name = field.name;
+                input.placeholder = field.placeholder || "";
+                input.value = section.data ? section.data[field.name] || "" : "";
+
+                input.addEventListener("input", (e) => {
+                    const currentSection = sectionsData.find((s) => s.instanceId === section.instanceId);
+                    if (currentSection) {
+                        if (!currentSection.data) {
+                            currentSection.data = {};
+                        }
+                        currentSection.data[field.name] = e.target.value;
+                        updatePreview();
+                    }
+                });
+
+                formGroup.appendChild(label);
+                formGroup.appendChild(input);
+                body.appendChild(formGroup);
+            });
+
+            card.appendChild(body);
+            builder.appendChild(card);
+        }
+
+        // PDF Export functionality
+        function downloadPDF() {
+            const element = document.getElementById("preview");
+            const opt = {
+                margin: 0.5,
+                filename: 'Professional_Resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            showNotification("Generating PDF...", "info");
+            html2pdf().from(element).set(opt).save().then(() => {
+                showNotification("PDF downloaded successfully!", "success");
+            }).catch(() => {
+                showNotification("Error generating PDF.", "error");
+            });
+        }
+
+        function changeTemplate(template) {
+            document.documentElement.setAttribute("data-template", template);
+            window.savedTemplate = template;
+            showNotification(`Applied ${template} template`, "info");
+        }
+
+        // Profile picture functionality
+    function previewProfilePic(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById("profileImagePreview");
+            preview.innerHTML = `<img src="${e.target.result}" alt="Profile Picture" />`;
+            updateProfileImageBorder(); // Apply current text color to border
+        };
+        reader.readAsDataURL(input.files[0]); // This creates base64 data
+    }
+}
+        // Notification system
+        function showNotification(message, type = "info") {
+            const notification = document.createElement("div");
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            switch (type) {
+                case "success":
+                    notification.style.background = "var(--success)";
+                    notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                    break;
+                case "error":
+                    notification.style.background = "var(--danger)";
+                    notification.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+                    break;
+                case "warning":
+                    notification.style.background = "var(--warning)";
+                    notification.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+                    break;
+                default:
+                    notification.style.background = "var(--primary)";
+                    notification.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = "slideOut 0.3s ease-out forwards";
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Authentication check
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!isLoggedIn || isLoggedIn !== 'true') {
+                // Redirect to login page if not authenticated
+                window.location.href = 'login.html';
+                return false;
+            }
+            
+            // Display user email
+            const userEmailElement = document.getElementById('userEmail');
+            const welcomeEmailElement = document.getElementById('welcomeEmail');
+            if (userEmail && userEmailElement) {
+                userEmailElement.textContent = userEmail;
+            }
+            if (userEmail && welcomeEmailElement) {
+                welcomeEmailElement.textContent = userEmail;
+            }
+            
+            return true;
+        }
+        
+        // Session timeout functionality
+        let sessionTimeout;
+        const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+        
+        function resetSessionTimeout() {
+            clearTimeout(sessionTimeout);
+            sessionTimeout = setTimeout(() => {
+                showNotification('Session expired. Please log in again.', 'warning');
+                logout();
+            }, SESSION_TIMEOUT);
+        }
+        
+        // Logout function
+        function logout() {
+            // Clear authentication data
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            
+            // Clear session timeout
+            clearTimeout(sessionTimeout);
+            
+            // Show logout notification
+            showNotification('Logged out successfully!', 'success');
+            
+            // Redirect to login page after a short delay
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+        }
+        
+        // Initialize the application
+        document.addEventListener("DOMContentLoaded", () => {
+            // Check authentication first
+            if (!checkAuth()) {
+                return;
+            }
+            
+            const savedTheme = window.savedTheme || "light";
+            const savedTemplate = window.savedTemplate || "default";
+            
+            document.documentElement.setAttribute("data-theme", savedTheme);
+            document.documentElement.setAttribute("data-template", savedTemplate);
+            document.getElementById("themeSelect").value = savedTemplate;
+            
+            // Show initial empty state
+            showEmptyState();
+            
+            // Initialize session timeout
+            resetSessionTimeout();
+            
+            // Add event listeners to reset session timeout on user activity
+            document.addEventListener('mousemove', resetSessionTimeout);
+            document.addEventListener('keypress', resetSessionTimeout);
+            document.addEventListener('click', resetSessionTimeout);
+            document.addEventListener('scroll', resetSessionTimeout);
+            
+            // Add slide-out animation keyframe
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideOut {
+                    from {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                    to {
+                        opacity: 0;
+                        transform: translateX(100px);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Color picker functionality
+            const previewBgColorPicker = document.getElementById("previewBgColor");
+            const previewTextColorPicker = document.getElementById("previewTextColor");
+
+            // Set initial colors
+            preview.style.backgroundColor = previewBgColorPicker.value;
+            preview.style.color = previewTextColorPicker.value;
+
+            // Update background color
+            previewBgColorPicker.addEventListener("input", (e) => {
+                const color = e.target.value;
+                preview.style.backgroundColor = color;
+                window.savedPreviewBgColor = color;
+            });
+
+            // Update text color (including icons and section text)
+            previewTextColorPicker.addEventListener("input", (e) => {
+                const color = e.target.value;
+                preview.style.color = color;
+                window.savedPreviewTextColor = color;
+
+                // Update profile image border color
+                updateProfileImageBorder();
+
+                // Trigger preview update to apply new color to all elements
+                updatePreview();
+            });
+
+            // Restore saved colors if available
+            if (window.savedPreviewBgColor) {
+                previewBgColorPicker.value = window.savedPreviewBgColor;
+                preview.style.backgroundColor = window.savedPreviewBgColor;
+            }
+            if (window.savedPreviewTextColor) {
+                previewTextColorPicker.value = window.savedPreviewTextColor;
+                preview.style.color = window.savedPreviewTextColor;
+                window.savedPreviewTextColor = window.savedPreviewTextColor;
+            }
+        });
+
+        function validateField(field, value) {
+            if (!value) {
+                return "This field is required.";
+            }
+
+            if (field.name === "fullName") {
+                const nameRegex = /^[a-zA-Z\s]+$/;
+                if (!nameRegex.test(value)) {
+                    return "Full name should not contain symbols or numbers.";
+                }
+            }
+
+            if (field.type === "email") {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) {
+                    return "Please enter a valid email address.";
+                }
+            }
+
+            if (field.type === "tel") {
+                const phoneRegex = /^\+?[0-9\s\-()]{7,15}$/;
+                if (!phoneRegex.test(value)) {
+                    return "Please enter a valid phone number.";
+                }
+
+                // Additional validation: If no "+" is present, the phone number should not be exactly 10 digits
+                if (!value.startsWith("+") && value.replace(/\D/g, "").length === 10) {
+                    return "Phone numbers without a '+' should not be exactly 10 digits.";
+                }
+            }
+
+            if (field.name === "linkedin") {
+                const linkedinRegex = /^https?:\/\/(www\.)?linkedin\.com\/.*$/;
+                if (!linkedinRegex.test(value)) {
+                    return "Please enter a valid LinkedIn URL.";
+                }
+            }
+
+            if (field.name === "gpa") {
+                const gpaRegex = /^[0-4](\.\d{1,2})?$/;
+                if (!gpaRegex.test(value)) {
+                    return "Please enter a valid GPA (e.g., 3.8).";
+                }
+            }
+
+            return null;
+        }
+    </script>
+
+
+</body>
+
+</html>
